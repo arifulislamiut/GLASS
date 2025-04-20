@@ -1,0 +1,21 @@
+DATASET:
+  ROOT: datasets/keyboard
+  CATEGORY: keyboard
+  TRAIN_DIR: train
+  TEST_DIR: test
+  NORMAL_DIR: good
+  ABNORMAL_DIR: defective
+  GT_DIR: ground_truth  # will be ignored because no masks
+  MASK_SUFFIX: "_mask.png"  # ignored
+
+MODEL:
+  NAME: glassad
+  BACKBONE: resnet18  # you can later try resnet34 or wider
+  PRETRAINED: true
+
+TRAINER:
+  GPU: 0
+  EPOCHS: 50
+  BATCH_SIZE: 16
+  LR: 0.001
+  SAVE_DIR: outputs/keyboard
