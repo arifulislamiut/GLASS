@@ -1,3 +1,7 @@
-/dtd
-/mvtec_anomaly_detection
+/datasets/dtd
+/datasets/mvtec_anomaly_detection
+/datasets/keyboard
+/datasets/raw_data
 /.idea
+/__pycache__
+/datasets/__pycache__
