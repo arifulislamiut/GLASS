@@ -1,0 +1,28 @@
+[Unit]
+Description=GLASS Defect Detection Auto-Start Service
+After=multi-user.target
+After=graphical-session.target
+Wants=graphical-session.target
+
+[Service]
+Type=forking
+User=jetson
+Group=jetson
+WorkingDirectory=/home/jetson
+Environment="HOME=/home/jetson"
+Environment="USER=jetson"
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=/home/jetson/.Xauthority"
+ExecStart=/home/jetson/glass_jetson_deploy/auto_start_detection.sh
+ExecStop=/bin/kill -TERM $MAINPID
+PIDFile=/var/run/glass_detection.pid
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# GPU and system access
+SupplementaryGroups=video dialout
+
+[Install]
+WantedBy=multi-user.target

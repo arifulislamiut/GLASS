@@ -304,14 +304,13 @@ class JetsonCompleteFabricDetector:
     def process_frame(self, frame):
         """Process frame with Jetson optimizations and runtime resolution"""
         try:
-            # Resize to current resolution (runtime adjustable)
+            # Convert to RGB (predictor will handle resizing to current_resolution)
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            frame_resized = cv2.resize(frame_rgb, (self.current_resolution, self.current_resolution))
             
             from PIL import Image
-            pil_image = Image.fromarray(frame_resized)
+            pil_image = Image.fromarray(frame_rgb)
             
-            # Run inference
+            # Run inference - predictor will resize to self.image_size internally
             start_time = time.time()
             results = self.predictor.predict(pil_image)
             inference_time = time.time() - start_time
@@ -329,6 +328,8 @@ class JetsonCompleteFabricDetector:
         if self.resolution_index < len(self.available_resolutions) - 1:
             self.resolution_index += 1
             self.current_resolution = self.available_resolutions[self.resolution_index]
+            # Update model image size
+            self.predictor.set_image_size(self.current_resolution)
             print(f"🔍 Resolution increased to {self.current_resolution}x{self.current_resolution}")
             return True
         else:
@@ -340,6 +341,8 @@ class JetsonCompleteFabricDetector:
         if self.resolution_index > 0:
             self.resolution_index -= 1
             self.current_resolution = self.available_resolutions[self.resolution_index]
+            # Update model image size
+            self.predictor.set_image_size(self.current_resolution)
             print(f"🔍 Resolution decreased to {self.current_resolution}x{self.current_resolution}")
             return True
         else:
