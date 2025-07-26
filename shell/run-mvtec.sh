@@ -1,13 +1,15 @@
-datapath=/root/cqy/dataset/MVTec
-augpath=/root/cqy/dataset/dtd/images
-classes=('carpet' 'grid' 'leather' 'tile' 'wood' 'bottle' 'cable' 'capsule' 'hazelnut' 'metal_nut' 'pill' 'screw' 'toothbrush' 'transistor' 'zipper')
+datapath=/home/arif/Projects/GLASS/datasets/mvtec_anomaly_detection
+augpath=/home/arif/Projects/GLASS/datasets/dtd/images
+#classes=('carpet' 'grid' 'leather' 'tile' 'wood' 'bottle' 'cable' 'capsule' 'hazelnut' 'metal_nut' 'pill' 'screw' 'toothbrush' 'transistor' 'zipper')
+#classes=('grid')
+classes=('carpet')
 flags=($(for class in "${classes[@]}"; do echo '-d '"${class}"; done))
 
 cd ..
 python main.py \
     --gpu 0 \
     --seed 0 \
-    --test ckpt \
+    --test test \
   net \
     -b wideresnet50 \
     -le layer2 \
@@ -30,7 +32,7 @@ python main.py \
     --distribution 0 \
     --mean 0.5 \
     --std 0.1 \
-    --fg 1 \
+    --fg 0 \
     --rand_aug 1 \
     --batch_size 8 \
     --resize 288 \

@@ -1,0 +1,130 @@
+# GLASS Fabric Detection - PC Configuration
+
+# Model Configuration
+model:
+  backend: "pytorch"          # pytorch, onnx
+  device: "cuda"              # cuda, cpu (auto-detected)
+  model_path: "models/wfdd_grid_cloth"
+
+# Camera Configuration
+camera:
+  device_id: 0               # Camera device ID
+  width: 640                 # Camera resolution width
+  height: 480                # Camera resolution height
+  fps: 30                    # Target FPS
+  buffer_size: 1             # Camera buffer size (1 for low latency)
+  backend: "auto"            # auto, dshow (Windows), v4l2 (Linux)
+
+# Display Configuration
+display:
+  enabled: true              # Enable/disable GUI display
+  headless_mode: false       # Force headless mode (no GUI window)
+  fallback_to_headless: true # Auto-fallback if display fails
+  window_name: "GLASS Fabric Detection"
+  save_frames: false         # Auto-save detection frames
+  
+  # Display modes: 0=All Views, 1=Original+Anomaly, 2=Original+Overlay, 3=Original Only
+  default_mode: 0
+  
+  # Window settings
+  window_size:
+    width: 960
+    height: 540
+  
+  # Panel settings for multi-view
+  panel_size:
+    width: 480
+    height: 360
+
+# Performance Configuration
+performance:
+  processing_interval: 1     # Process every Nth frame (1 for real-time)
+  target_fps: 30            # Target display FPS
+  enable_gpu_acceleration: true
+  
+  # Threading
+  inference_threads: 4      # Number of inference threads
+  
+  # Memory management
+  cache_results: true       # Cache results for smooth display
+  garbage_collection: true  # Enable periodic cleanup
+
+# Detection Configuration  
+detection:
+  threshold: 0.5            # Anomaly detection threshold
+  confidence_threshold: 0.3 # Confidence threshold
+  
+  # Post-processing
+  apply_smoothing: true     # Temporal smoothing
+  smoothing_factor: 0.3     # Smoothing strength (0-1)
+
+# System Configuration
+system:
+  # Auto-detection settings
+  auto_detect_cuda: true    # Auto-detect CUDA availability
+  auto_detect_camera: true  # Auto-detect camera backend
+  
+  # Logging
+  log_level: "INFO"         # DEBUG, INFO, WARNING, ERROR
+  log_performance: true     # Log performance metrics
+  
+  # Safety
+  max_memory_usage: 0.8     # Max memory usage (0-1)
+  thermal_throttling: false # Enable thermal throttling
+
+# Keyboard Shortcuts
+shortcuts:
+  quit: "q"                 # Quit application
+  save: "s"                 # Save current frame
+  display_mode: "d"         # Cycle display modes
+  help: "h"                 # Show help
+  toggle_overlay: "o"       # Toggle overlay
+  reset: "r"                # Reset system
+
+# Output Configuration
+output:
+  save_path: "./detections"      # Path to save frames
+  filename_format: "detection_{timestamp}_{status}.jpg"
+  save_on_defect: false          # Auto-save when defect detected
+  save_interval: 0               # Auto-save interval (0=disabled)
+
+# Advanced Configuration
+advanced:
+  # OpenCV settings
+  opencv_backend: "auto"         # auto, qt, gtk
+  threading_backend: "auto"      # auto, tbb, openmp
+  
+  # Display optimizations
+  vsync: false                   # Enable VSync
+  double_buffering: true         # Enable double buffering
+  
+  # Debug options
+  debug_mode: false              # Enable debug mode
+  show_processing_time: true     # Show processing time
+  show_memory_usage: true        # Show memory usage
+
+# Profile Configurations (can be selected at runtime)
+profiles:
+  high_performance:
+    processing_interval: 1
+    target_fps: 60
+    enable_gpu_acceleration: true
+    cache_results: true
+    
+  balanced:
+    processing_interval: 1
+    target_fps: 30
+    enable_gpu_acceleration: true
+    cache_results: true
+    
+  power_save:
+    processing_interval: 2
+    target_fps: 15
+    enable_gpu_acceleration: false
+    cache_results: false
+    
+  headless_production:
+    headless_mode: true
+    processing_interval: 1
+    save_on_defect: true
+    log_performance: true

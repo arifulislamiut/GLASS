@@ -1,0 +1,41 @@
+# GLASS Fabric Detection - Jetson Orin Nano Requirements
+# Optimized for ARM64 architecture and Jetson hardware
+
+# Core dependencies (versions compatible with Jetson)
+numpy>=1.21.0,<1.25.0
+opencv-python>=4.5.0
+Pillow>=8.3.0,<10.0.0
+pandas>=1.3.0,<2.0.0
+tqdm>=4.62.0
+click>=8.0.0
+scikit-learn>=1.0.0,<1.3.0
+matplotlib>=3.5.0,<3.8.0
+
+# Model dependencies
+timm>=0.6.0,<0.10.0
+
+# ONNX Runtime for Jetson (ARM64)
+# Note: Install via JetPack or specific ARM wheel
+# onnxruntime-gpu  # Will be installed separately if available
+
+# Jetson-specific optimizations
+psutil>=5.8.0
+GPUtil>=1.4.0
+
+# Optional: TensorRT Python bindings (if available)
+# tensorrt  # Usually pre-installed with JetPack
+
+# Development and debugging
+ipython>=7.0.0
+jupyter>=1.0.0
+
+# Configuration management
+PyYAML>=6.0
+
+# Networking (for remote monitoring)
+requests>=2.25.0
+flask>=2.0.0
+
+# Image processing enhancements
+imageio>=2.9.0
+scipy>=1.7.0,<1.11.0

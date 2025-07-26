@@ -1,0 +1,173 @@
+# GLASS Fabric Detection - Jetson Orin Nano Configuration
+
+# Hardware Configuration
+hardware:
+  platform: "jetson_orin_nano"
+  memory_limit_gb: 6  # Leave 2GB for system
+  gpu_memory_fraction: 0.8
+  max_batch_size: 1
+  
+# Model Configuration
+model:
+  # Use PyTorch for better Jetson compatibility
+  backend: "pytorch"  # pytorch, onnx, tensorrt
+  precision: "fp16"   # fp32, fp16, int8
+  input_resolution: 256  # 224, 256, 288
+  
+  # Model paths
+  pytorch_model: "models/wfdd_grid_cloth/ckpt_best_571.pth"
+  onnx_model: "models/glass_fp16.onnx"
+  tensorrt_engine: "models/glass_trt.engine"
+
+# Performance Configuration
+performance:
+  # Power management
+  power_mode: "balanced"  # max_performance, balanced, power_save
+  target_fps: 15
+  processing_interval: 2  # Process every Nth frame
+  
+  # Memory optimization
+  cache_size: 10
+  garbage_collection: true
+  memory_cleanup_interval: 100  # frames
+  
+  # Threading
+  inference_threads: 2
+  io_threads: 1
+
+# Camera Configuration
+camera:
+  device_id: 0
+  width: 640
+  height: 480
+  fps: 30
+  format: "MJPG"  # YUYV, MJPG
+  
+  # Camera optimization for Jetson
+  buffer_size: 1
+  auto_exposure: true
+  auto_white_balance: true
+
+# Detection Configuration
+detection:
+  threshold: 0.5
+  confidence_threshold: 0.3
+  nms_threshold: 0.4
+  
+  # Fabric-specific settings
+  fabric_types:
+    - "cotton"
+    - "polyester" 
+    - "wool"
+    - "silk"
+  
+  defect_types:
+    - "hole"
+    - "stain"
+    - "wrinkle"
+    - "tear"
+    - "color_variation"
+
+# Display Configuration
+display:
+  enabled: true
+  mode: "compact"  # full, compact, minimal
+  show_fps: true
+  show_memory: true
+  show_temperature: true
+  headless_mode: false      # Force headless mode (no GUI window)
+  fallback_to_headless: true  # Auto-fallback if display fails
+  save_frames: false        # Auto-save detection frames
+  window_name: "GLASS Jetson Fabric Detection"
+  
+  # Remote display options
+  vnc_enabled: false
+  web_interface: false
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_to_file: true
+  log_directory: "/opt/glass/logs"
+  max_log_size_mb: 100
+  backup_count: 5
+  
+  # Performance logging
+  log_performance: true
+  performance_interval: 60  # seconds
+
+# Optimization Profiles
+profiles:
+  max_performance:
+    power_mode: "max_performance"
+    input_resolution: 288
+    precision: "fp16"
+    target_fps: 20
+    processing_interval: 1
+    
+  balanced:
+    power_mode: "balanced"
+    input_resolution: 256
+    precision: "fp16"
+    target_fps: 15
+    processing_interval: 2
+    
+  power_save:
+    power_mode: "power_save"
+    input_resolution: 224
+    precision: "fp16"
+    target_fps: 10
+    processing_interval: 3
+
+# System Monitoring
+monitoring:
+  enabled: true
+  temperature_threshold: 75  # Celsius
+  memory_threshold: 85  # Percentage
+  cpu_threshold: 90  # Percentage
+  
+  # Actions on threshold breach
+  throttle_on_overheat: true
+  reduce_fps_on_memory: true
+  alert_on_high_cpu: true
+
+# Industrial Integration
+industrial:
+  # GPIO pins for industrial control
+  gpio_enabled: false
+  reject_pin: 18
+  ready_pin: 19
+  alarm_pin: 20
+  
+  # Communication protocols
+  modbus_enabled: false
+  opcua_enabled: false
+  
+  # Data logging for quality control
+  quality_logging: true
+  statistics_interval: 3600  # seconds
+
+# Network Configuration
+network:
+  # Remote monitoring
+  api_enabled: false
+  api_port: 8080
+  api_key: "glass_api_key_change_me"
+  
+  # Time synchronization
+  ntp_enabled: true
+  timezone: "UTC"
+
+# Backup and Recovery
+backup:
+  auto_backup: true
+  backup_interval: 86400  # seconds (24 hours)
+  backup_location: "/opt/glass/backups"
+  max_backups: 7
+
+# Development and Debug
+debug:
+  save_debug_images: false
+  debug_image_path: "/opt/glass/debug"
+  profile_performance: false
+  memory_profiling: false

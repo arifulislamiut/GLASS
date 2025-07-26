@@ -1,14 +1,17 @@
-datapath=/home/arif/Projects/GLASS/datasets/WFDD
-augpath=//home/arif/Projects/GLASS/datasets/dtd/images
-classes=('grey_cloth' 'grid_cloth' 'yellow_cloth' 'pink_flower')
-# classes=('grid_cloth')
+#!/bin/bash
+
+# Keyboard dataset training script for GLASS
+datapath=/home/arif/Projects/GLASS/datasets/keyboard
+augpath=/home/arif/Projects/GLASS/datasets/dtd/images
+
+# Define classes (keyboard is the main class)
+classes=('keyboard')
 flags=($(for class in "${classes[@]}"; do echo '-d '"${class}"; done))
 
-cd ..
 python main.py \
     --gpu 0 \
     --seed 0 \
-    --test test \
+    --test ckpt \
   net \
     -b wideresnet50 \
     -le layer2 \
@@ -35,4 +38,4 @@ python main.py \
     --rand_aug 1 \
     --batch_size 8 \
     --resize 288 \
-    --imagesize 288 "${flags[@]}" wfdd $datapath $augpath
+    --imagesize 288 "${flags[@]}" keyboard $datapath $augpath 

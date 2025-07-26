@@ -142,7 +142,7 @@ class CameraAnomalyDetector:
     
     def add_text_overlay(self, frame, results, fps, processing_time):
         """Add text information to frame"""
-        # Score and status in top area
+        # Score and status
         if results:
             score = results['image_score']
             is_anomalous = results['is_anomalous']
@@ -151,20 +151,14 @@ class CameraAnomalyDetector:
             color = (0, 0, 255) if is_anomalous else (0, 255, 0)
             status = "ANOMALY DETECTED!" if is_anomalous else "Normal"
             
-            # Add text with proper spacing
+            # Add text
             cv2.putText(frame, f"Score: {score:.3f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
-            cv2.putText(frame, status, (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
+            cv2.putText(frame, status, (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
         
-        # Performance info in right column to avoid overlap
-        right_x = frame.shape[1] - 200
-        cv2.putText(frame, f"FPS: {fps:.1f}", (right_x, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-        cv2.putText(frame, f"Processing: {processing_time*1000:.1f}ms", (right_x, 55), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-        cv2.putText(frame, f"Threshold: {self.threshold:.2f}", (right_x, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-        
-        # Control text at bottom in compact format
-        control_y = frame.shape[0] - 25
-        cv2.putText(frame, "Controls: q:Quit a:AnomalyMap o:Overlay t:AutoThreshold +/-:Threshold s:Save", 
-                   (10, control_y), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (200, 200, 200), 1)
+        # Performance info
+        cv2.putText(frame, f"FPS: {fps:.1f}", (10, frame.shape[0] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+        cv2.putText(frame, f"Processing: {processing_time*1000:.1f}ms", (10, frame.shape[0] - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+        cv2.putText(frame, f"Threshold: {self.threshold:.2f}", (10, frame.shape[0] - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
         
         return frame
     
